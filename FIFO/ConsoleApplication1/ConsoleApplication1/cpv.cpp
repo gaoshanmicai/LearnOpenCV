@@ -1,29 +1,38 @@
-//显示图像文件  
-#include <opencv2/opencv.hpp>  
-using namespace std;
+#include<opencv2\core\core.hpp>	
+#include <opencv2/highgui/highgui.hpp>
+#include <iostream>
 
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")  
-
+cv::Mat image;
 int main()
 {
-	const char *pstrImageName = "image123.jpg";
-	const char *pstrWindowsTitle = "OpenCV第一个程序";
+	
+	 
 
-	//从文件中读取图像  
-	IplImage *pImage = cvLoadImage(pstrImageName, CV_LOAD_IMAGE_UNCHANGED);
+//	std::cout << "This image is " << image.rows << " x"
+//		<< image.cols << std::endl;
+	image = cv::imread("image123.bmp");
 
-	//创建窗口  
-	cvNamedWindow(pstrWindowsTitle, CV_WINDOW_AUTOSIZE);
+	if (image.empty())
+	{
+		std::cout << "error handler" << std::endl;
+	}
+	std::cout << "This image is " << image.rows << " x"
+		<< image.cols << std::endl;
 
-	//在指定窗口中显示图像  
-	cvShowImage(pstrWindowsTitle, pImage);
+	cv::namedWindow("My first picture");
+	cv::imshow("My first picture", image);
+	//cv::waitKey(0);
 
-	//等待按键事件  
-	cvWaitKey();
+	cv::Mat result;
+	cv::flip(image, result, 1);
+	cv::namedWindow("output Image");
+	cv::imshow("output Image", result);
+	cv::waitKey(0);
 
-	cvDestroyWindow(pstrWindowsTitle);
-	cvReleaseImage(&pImage);
+	cv::imwrite("output.bmp", result);
+
+
 	return 0;
+
+	
 }
-
-
